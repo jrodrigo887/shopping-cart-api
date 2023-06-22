@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Products extends Model
 {
@@ -19,5 +20,9 @@ class Products extends Model
     }
     public function setpriceAttribute($attr) {
         return $this->attributes['price'] = $attr * 100;
+    }
+
+    public function ckeckout(): BelongsTo {
+        return $this->belongsTo(Checkout::class)->withDefault();
     }
 }
