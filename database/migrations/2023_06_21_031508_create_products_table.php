@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-            $table->integer('price');
+            $table->string('description')->nullable();
+            $table->integer('price')->default(0);
+            $table->foreignId('checkout_id')->nullable();
+            $table->foreign('checkout_id')->references('id')->on('checkouts')->onDelete('cascade');
             $table->timestamps();
         });
     }
