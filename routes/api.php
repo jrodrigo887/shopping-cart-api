@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CheckoutController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('products', \App\Http\Controllers\Api\ProductController::class);
 Route::apiResource('checkouts', \App\Http\Controllers\Api\CheckoutController::class);
 Route::apiResource('checkouts.products', \App\Http\Controllers\Api\ProductController::class)->only(['index']);
+Route::post('/checkouts/{checkoutId}/products', [CheckoutController::class, 'addProductsTocheckout']);

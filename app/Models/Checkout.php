@@ -22,6 +22,11 @@ class Checkout extends Model
         return $this->attributes['total'] = $attr * 100;
     }
 
+    public function getAssociatedProducts()
+    {
+        return $this->products();
+    }
+
 
     public function products(): HasMany
     {

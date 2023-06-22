@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Checkout;
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -21,6 +22,25 @@ class CheckoutController extends Controller
         return $this->checkout::all();
     }
 
+    public function addProductsTocheckout(Request $request, $checkoutId) {
+        $checkout = Checkout::find($checkoutId);
+
+        if (!$checkout) {
+            return response()->json(['message' => 'Checout não encontrado'], 404);
+        }
+
+        $prodsData = $request->input('products',[]);
+
+        $products = [];
+        foreach ($prodsData as $prod) {
+            $product = new Products($prod);
+            $products[] = $product;
+        }
+
+        $checkout->products()->saveMany($products);
+        return response()->json(['message' => 'Produtos adicionados com sucesso'], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -34,7 +54,19 @@ class CheckoutController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $checkout = Checkout::find($id);
+
+        if (!$checkout) {
+            return response()->json(['message' => 'Checkout não encontrado'], 404);
+        }
+
+        $products[] = $checkout->getAssociatedProducts();
+
+        if (!$products) {
+            return response()->json(['message' => 'sem produtos'], 404);
+        }
+
+        return response()->json(['checkout' => $checkout, 'products' => $products], 200);
     }
 
     /**
