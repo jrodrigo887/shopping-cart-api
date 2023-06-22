@@ -22,7 +22,7 @@ class Products extends Model
         return $this->attributes['price'] = $attr * 100;
     }
 
-    public function ckeckout(): BelongsTo {
-        return $this->belongsTo(Checkout::class)->withDefault();
+    public function ckeckout() {
+        return $this->belongsTo(Checkout::class);
     }
 }
