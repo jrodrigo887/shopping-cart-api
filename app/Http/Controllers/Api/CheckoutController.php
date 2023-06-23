@@ -4,22 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Checkout;
-use App\Models\Products;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
 {
-    private $checkout;
-    function __construct(Checkout $checkouts)
-    {
-        $this->checkout = $checkouts;
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $ckts = $this->checkout::withd('products')->get();
+        $ckts = Checkout::with('products')->get();
         return response()->json($ckts);
     }
 
@@ -28,22 +22,13 @@ class CheckoutController extends Controller
      */
     public function show(string $id)
     {
-        $ckt = $this->checkout::with('products')->find($id);
+        $ckt = Checkout::with('products')->find($id);
 
         if (!$ckt) {
             return response()->json(['message' => 'Checkout não encontrado'], 404);
         }
 
         return response()->json($ckt, 200);
-
-
-        // $products[] = $checkout->getAssociatedProducts();
-
-        // if (!$products) {
-        //     return response()->json(['message' => 'sem produtos'], 404);
-        // }
-
-        // return response()->json(['checkout' => $checkout, 'products' => $products], 200);
     }
 
     /**
@@ -51,7 +36,7 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        $this->checkout::created($request->all());
+        Checkout::created($request->all());
         return response()->json(['message'=> 'Carrrinho Criado com sucesso.'], 201);
     }
 
@@ -60,7 +45,7 @@ class CheckoutController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data = $this->checkout::find($id);
+        $data = Checkout::find($id);
         $data->update($request->all());
 
         return response()->json($data, 200);
@@ -71,12 +56,12 @@ class CheckoutController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->checkout::destroy($id);
-        return response()->json(['message' => 'Checkout deleted']);
+        Checkout::destroy($id);
+        return response()->json(['message' => 'Checkout deleted'], 204);
     }
 
     public function addProducts(Request $request, $checkoutId) {
-        $checkout = $this->checkout::find($checkoutId);
+        $checkout = Checkout::find($checkoutId);
 
         if (!$checkout) {
             return response()->json(['message' => 'Checout não encontrado'], 404);
@@ -92,12 +77,12 @@ class CheckoutController extends Controller
     }
     public function removeProduct(Request $request, $checkoutId, $productId) {
 
-        $checkout = $this->checkout::find($checkoutId);
+        $checkout = Checkout::find($checkoutId);
         if (!$checkout) {
             return response()->json(['message' => 'Checkout não encontrado'], 404);
         }
 
-        $product = $this->checkout->products()->find($productId);
+        $product = $checkout->products()->find($productId);
         if (!$product) {
             return response()->json(['message' => 'produto não encontrado.'], 404);
         }
