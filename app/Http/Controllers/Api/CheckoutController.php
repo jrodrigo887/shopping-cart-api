@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Checkout;
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -69,7 +70,12 @@ class CheckoutController extends Controller
 
         $products = $request->input('products',[]);
         foreach ($products as $prod) {
-            $checkout->products()->created($prod);
+            $checkout->products()->create([
+                'name' => $prod['name'],
+                'description' => $prod['description'],
+                'price' => $prod['price'],
+                'checkout_id' => $checkoutId ?? null,
+            ]);
         }
 
         // $checkout->products()->saveMany($products);
