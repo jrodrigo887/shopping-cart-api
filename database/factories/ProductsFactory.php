@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Checkout;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,7 @@ class ProductsFactory extends Factory
            'name' => $this->faker->words(2, true),
            'description' => $this->faker->sentence,
            'price' => $this->faker->randomFloat(2, 10, 300),
+           'checkout_id' => Checkout::factory()->create(),
         ];
     }
 }

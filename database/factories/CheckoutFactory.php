@@ -20,7 +20,6 @@ class CheckoutFactory extends Factory
         return [
             'name' => $this->faker->words(2, true),
             'total' => $this->faker->randomFloat(2, 10, 300),
-            'product_id' => Products::factory(),
         ];
     }
 }

@@ -11,7 +11,6 @@ class Checkout extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'total',
     ];
 
     public function products()
@@ -21,10 +20,5 @@ class Checkout extends Model
 
     public function getTotalAttribute() {
         return $this->products()->sum('price') / 100; // 2990 => 29.9
-    }
-
-    public function getAssociatedProducts()
-    {
-        return $this->products();
     }
 }
