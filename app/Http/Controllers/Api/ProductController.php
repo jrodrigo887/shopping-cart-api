@@ -8,17 +8,12 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    private $product;
-    function __construct(Products $products)
-    {
-        $this->product = $products;
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return response()->json($this->product::all());
+        return response()->json(Products::all());
     }
 
     /**
@@ -33,8 +28,15 @@ class ProductController extends Controller
             'checkout_id'=> 'nullable',
         ]);
 
-        $this->product::created($validData);
-        return response()->json(['message'=> 'Produto criado com sucesso.'], 201);
+        $product = Products::create([
+            'name' => $validData['name'],
+            'description' => $validData['description'],
+            'price' => $validData['price'],
+            'checkout_id' => $validData['checkout_id'] ?? null,
+        ]);
+
+
+        return response()->json(['message'=> 'Produto criado com sucesso.', 'product' => $product], 201);
     }
 
     /**
@@ -42,7 +44,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $prod = $this->product::find($id);
+        $prod = Products::find($id);
         return response()->json($prod);
     }
 
@@ -52,6 +54,12 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
 
+        $product = Products::find($id);
+
+        if (!$product) {
+            return response()->json(['message'=> 'Produto não encontrado'], 404);
+        }
+
         $validData = $request->validate([
             'name'=> 'required|max:255',
             'description'=> 'nullable',
@@ -59,8 +67,15 @@ class ProductController extends Controller
             'checkout_id'=> 'nullable',
         ]);
 
-        $this->product::updated($validData);
-        return response()->json(200);
+        $product->update([
+            'name' => $validData['name'],
+            'description' => $validData['description'],
+            'price' => $validData['price'],
+            'checkout_id' => $validData['checkout_id'] ?? null,
+        ]);
+
+        // $products->update($validData);
+        return response()->json($product, 200);
     }
 
     /**
@@ -68,7 +83,7 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->product::destroy($id);
+        Products::destroy($id);
         return response()->json(['message'=> 'Produto deletado com sucesso.'], 200);
     }
 }
