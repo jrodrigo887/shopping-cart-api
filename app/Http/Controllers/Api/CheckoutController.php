@@ -70,15 +70,24 @@ class CheckoutController extends Controller
 
         $products = $request->input('products',[]);
         foreach ($products as $prod) {
-            $checkout->products()->create([
-                'name' => $prod['name'],
-                'description' => $prod['description'],
-                'price' => $prod['price'],
-                'checkout_id' => $checkoutId ?? null,
-            ]);
+            $product = Products::find($prod['id']);
+            if ($product) {
+                $product->update([
+                    'name' => $prod['name'],
+                    'description' => $prod['description'],
+                    'price' => $prod['price'],
+                    'checkout_id' => $checkoutId ?? null,
+                ]);
+             } else {
+                $checkout->products()->create([
+                    'name' => $prod['name'],
+                    'description' => $prod['description'],
+                    'price' => $prod['price'],
+                    'checkout_id' => $checkoutId ?? null,
+                ]);
+             }
         }
 
-        // $checkout->products()->saveMany($products);
         return response()->json(['message' => 'Produtos adicionados com sucesso', 'products'=> $products]);
     }
     public function removeProduct(Request $request, $checkoutId, $productId) {
