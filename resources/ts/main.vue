@@ -28,8 +28,9 @@ onMounted(() => {
                         nenhum produto encontrado
                     </h3>
                     <h3 v-else class="text-2xl text-blue-800 tracking-wide">Loading</h3>
-                    <h1>Checkout</h1>
-                    <p>Resumo da compra</p>
+                    <div class="w-48 py-5 bg-purple-800">
+                        <img src="../assets/add_white_24dp.svg" alt="ícone adicionar produto">
+                    </div>
                     <CheckoutView></CheckoutView>
                 </div>
             </div>
