@@ -7,11 +7,11 @@
         <title>App vue</title>
 
         <!-- Fonts -->
-        <!-- <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" /> -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/ts/app.ts'])
     </head>
     <body class="antialiased">
-    <div id="app"></div>
+        <div id="app"></div>
     </body>
 </html>
