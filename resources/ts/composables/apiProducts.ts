@@ -1,9 +1,9 @@
 import { ref, computed } from 'vue';
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import Product from '../types/Product';
+import ProductDto from '../types/Product.dto';
 
 export function useApiProducts() {
-    const products = ref<Product[]>([]);
+    const products = ref<ProductDto[]>([]);
     const loading = ref<boolean>(false);
     const isError = ref <boolean>(false);
     const messageError = ref <string>('');
@@ -11,7 +11,7 @@ export function useApiProducts() {
     const getProducts = () => {
         loading.value = true;
         axios.get('http://127.0.0.1:8000/api/products')
-            .then((res: AxiosResponse<Product[], any>) => {
+            .then((res: AxiosResponse<ProductDto[], any>) => {
                 setTimeout(() => {
                     products.value = res.data;
                     loading.value = false;
