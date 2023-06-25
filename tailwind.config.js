@@ -8,6 +8,9 @@ export default {
     ],
     theme: {
         extend: {},
+        fontFamily: {
+            'Robot': ['Roboto', 'Arial', 'sans-serif']
+        }
     },
     plugins: [],
 }
