@@ -1,13 +1,26 @@
 <script lang="ts" setup>
-import { Ref } from 'vue';
-import Checkout from '../models/Checkout';
+import { Ref, onMounted, watchEffect } from 'vue';
+import CheckoutUsecase from '../usecase/Checkout.usecase';
 import ButtonComponent from './ButtonComponent.vue';
+import { useApiCheckout } from '../composables/apiCheckout';
 
-const { checkout } = defineProps<{ checkout: Ref<Checkout> }>()
+const { checkout } = defineProps<{ checkout: Ref<CheckoutUsecase> }>()
+
+const { getCheckout, isError, createCheckout } = useApiCheckout();
+
+watchEffect(() => {
+    if (isError.value) {
+        createCheckout('Finalizar Compras 1');
+    }
+})
+
+onMounted(async () => {
+    await getCheckout();
+});
 
 </script>
 <template>
-    <div class="">
+    <div>
         <p>Resumo da compra</p>
         <ul class="space-y-2 mb-4">
             <li v-for="product of checkout.getProducts()" class="flex justify-between bg-white shadow-lg rounded-sm px-4 py-2">
@@ -20,7 +33,7 @@ const { checkout } = defineProps<{ checkout: Ref<Checkout> }>()
                 </button>
             </li>
         </ul>
-        <ButtonComponent @onClick="$emit('onClick')" :disabled="false">
+        <ButtonComponent @onClick="$emit('onClick')" :disabled="checkout.getProducts().length === 0">
             <span>Fechar Pedido</span>
         </ButtonComponent>
     </div>
