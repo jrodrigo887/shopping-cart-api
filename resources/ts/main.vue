@@ -59,7 +59,7 @@ onMounted(() => {
                         <SaveProductView></SaveProductView>
                     </h3>
 
-                    <h3 v-else class="text-2xl text-blue-800 tracking-wide">Loading</h3>
+                    <h3 v-else class="text-2xl text-purple-800 tracking-wide">Loading...</h3>
 
                     <div class="my-2 divide-y divide-gray-400"></div>
 

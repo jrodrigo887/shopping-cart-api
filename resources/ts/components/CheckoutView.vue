@@ -1,21 +1,27 @@
 <script lang="ts" setup>
-import { Ref, onMounted, watchEffect } from 'vue';
+import { Ref, onMounted } from 'vue';
 import CheckoutUsecase from '../usecase/Checkout.usecase';
 import ButtonComponent from './ButtonComponent.vue';
 import { useApiCheckout } from '../composables/apiCheckout';
 
 const { checkout } = defineProps<{ checkout: Ref<CheckoutUsecase> }>()
 
-const { getCheckout, isError, createCheckout } = useApiCheckout();
+const { getCheckout, isError, createCheckout, loading, saveMessage } = useApiCheckout();
 
-watchEffect(() => {
-    if (isError.value) {
-        createCheckout('Finalizar Compras 1');
+const loadCheckout = async () => {
+    try {
+        const hasCheckout = await getCheckout();
+
+        if (!hasCheckout) {
+            createCheckout('Finalizar Compras 1');
+        }
+    } catch(e) {
+        console.error(e)
     }
-})
+}
 
-onMounted(async () => {
-    await getCheckout();
+onMounted(() => {
+    loadCheckout();
 });
 
 </script>
@@ -36,5 +42,15 @@ onMounted(async () => {
         <ButtonComponent @onClick="$emit('onClick')" :disabled="checkout.getProducts().length === 0">
             <span>Fechar Pedido</span>
         </ButtonComponent>
+        <div>
+            <small v-if="loading" class="text-blue-500 font-semibold">...</small>
+
+            <small v-if="isError" class="text-red-500 font-semibold">
+                Erro no servidor, tente mais tarde!
+            </small>
+            <small v-if="saveMessage.length > 0" class="text-green-500 font-semibold">
+                {{  saveMessage }}
+            </small>
+        </div>
     </div>
 </template>

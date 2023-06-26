@@ -16,8 +16,9 @@ export function useApiCheckout() {
     const isError = ref<boolean>(false);
     const errorMessage = ref<string>('');
     const successMessage = ref('');
+    const saveMessage = ref('');
 
-    const getCheckout = (): Promise<void> => {
+    const getCheckout = (): Promise<boolean> => {
         return new Promise((resolve, reject) => {
         loading.value = true;
         http.get('/api/checkouts')
@@ -26,13 +27,13 @@ export function useApiCheckout() {
                     checkout.value = CheckoutMapper.checkoutFromDTO(res.data[0]);
                 }
                 loading.value = false;
-                resolve();
+                resolve(true);
             })
             .catch((e) => {
                 isError.value = true;
                 errorMessage.value = e;
                 loading.value = false;
-                reject();
+                reject(false);
             });
         });
     }
@@ -60,17 +61,15 @@ export function useApiCheckout() {
         http.post(`/api/checkouts/${checkoutDto.id}/products/`, { products: checkoutDto.products})
             .then((res: AxiosResponse<{ message: string }, ProductDto[]>) => {
                 loading.value = false;
-                successMessage.value = res.data.message ?? 'Solicitação concluída';
+                saveMessage.value = res.data.message ?? 'Pedido concluído com sucesso!';
                 setTimeout(() => {
-                    successMessage.value = '';
+                    saveMessage.value = '';
                 }, 2500)
-
             })
             .catch((e) => {
                 isError.value = true;
                 errorMessage.value = e;
                 loading.value = false;
-
             });
     }
 
@@ -83,5 +82,6 @@ export function useApiCheckout() {
         isError: computed(() => isError.value),
         messageError: computed(() => errorMessage.value),
         successMessage: computed(() => successMessage.value),
+        saveMessage: computed(() => saveMessage.value),
     }
 }
