@@ -46,11 +46,8 @@ export default class CheckoutUsecase {
     }
 
     public verifyCheckoutDatabase() {
-        setTimeout(() => {
-            if (checkoutModel.value) {
-                this.products.push(...checkoutModel.value.getProducts());
-                console.log(this.products);
-            }
-        }, 300)
+        if (checkoutModel.value) {
+            this.products.push(...checkoutModel.value.getProducts());
+        }
     }
 }

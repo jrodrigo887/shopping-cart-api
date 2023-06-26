@@ -1,5 +1,7 @@
 import { ref, computed } from 'vue';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import  { AxiosResponse } from 'axios';
+import http from '../http';
+
 import ProductDto from '../types/Product.dto';
 import ProductRequestDto from '../types/ProductRequest.dto';
 
@@ -13,7 +15,7 @@ export function useApiProducts() {
 
     const getProducts = () => {
         loading.value = true;
-        axios.get('http://127.0.0.1:8000/api/products')
+        http.get('/api/products')
             .then((res: AxiosResponse<ProductDto[], any>) => {
                 products.value = res.data;
                 loading.value = false;
@@ -26,7 +28,7 @@ export function useApiProducts() {
     }
     const saveProduct = (product: ProductRequestDto) => {
         loading.value = true;
-        axios.post('http://127.0.0.1:8000/api/products', product)
+        http.post('/api/products', product)
         .then((res: AxiosResponse<any, any>) => {
                 loading.value = false;
                 successMessage.value = res.data.message ?? 'Produto salvo com sucesso.';

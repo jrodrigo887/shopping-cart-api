@@ -1,5 +1,7 @@
 import { ref, computed } from 'vue';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import { AxiosResponse } from 'axios';
+import http from '../http';
+
 import ProductDto from '../types/Product.dto';
 import Checkout from '../models/Checkout';
 import CheckoutDto from '../types/Checkout.dto';
@@ -18,10 +20,10 @@ export function useApiCheckout() {
     const getCheckout = (): Promise<void> => {
         return new Promise((resolve, reject) => {
         loading.value = true;
-        axios.get('http://127.0.0.1:8000/api/checkouts/2')
-            .then((res: AxiosResponse<CheckoutDto , any>) => {
+        http.get('/api/checkouts')
+            .then((res: AxiosResponse<CheckoutDto[] , any>) => {
                 if (res.data) {
-                    checkout.value = CheckoutMapper.checkoutFromDTO(res.data);
+                    checkout.value = CheckoutMapper.checkoutFromDTO(res.data[0]);
                 }
                 loading.value = false;
                 resolve();
@@ -34,9 +36,10 @@ export function useApiCheckout() {
             });
         });
     }
+
     const createCheckout = (name: string) => {
         loading.value = true;
-        axios.post('http://127.0.0.1:8000/api/checkouts', { name })
+        http.post('/api/checkouts', { name })
             .then((res: AxiosResponse<MessageCheckoutResponse, any>) => {
                 if (res.data.checkout) {
                     const ckt = res.data.checkout;
@@ -52,10 +55,9 @@ export function useApiCheckout() {
     }
 
     const save = (products:  Product[]) => {
-
-            loading.value = true;
+        loading.value = true;
         const checkoutDto = CheckoutMapper.checkoutToDTO(new Checkout(checkout.value!.getName(), checkout.value!.getId(), products))
-        axios.post(`http://127.0.0.1:8000/api/checkouts/${checkoutDto.id}/products/`, { products: checkoutDto.products})
+        http.post(`/api/checkouts/${checkoutDto.id}/products/`, { products: checkoutDto.products})
             .then((res: AxiosResponse<{ message: string }, ProductDto[]>) => {
                 loading.value = false;
                 successMessage.value = res.data.message ?? 'Solicitação concluída';
@@ -70,8 +72,6 @@ export function useApiCheckout() {
                 loading.value = false;
 
             });
-
-
     }
 
     return {
