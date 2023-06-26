@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->integer('price')->default(0);
+            $table->integer('quantity')->default(0);
             $table->foreignId('checkout_id')->nullable();
             $table->foreign('checkout_id')->references('id')->on('checkouts')->onDelete('cascade');
             $table->timestamps();
