@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import { useApiProducts } from './composables/apiProducts';
 import { ProductView, CheckoutView } from './components';
-import CheckoutUsecase from './usecase/Checkout.usecase';
+import { CheckoutUsecase } from './usecase/Checkout.usecase';
 import Product from './models/Product';
 import ProductDto from './types/Product.dto';
 import SaveProductView from './components/SaveProductView.vue';
 
 const { getProducts, result, loading } = useApiProducts();
-const checkoutInstance = ref(new CheckoutUsecase());
+
+// const checkoutInstance: Ref<CheckoutUsecase> = ref<CheckoutUsecase>(new CheckoutUsecase());
+const state = reactive<CheckoutUsecase>(new CheckoutUsecase())
 const openDrawer = ref(false);
 
 const addProductToCheckout = (product: ProductDto) => {
-    checkoutInstance.value.setProduct(new Product(product.name, product.description, product.price, product.id))
+    state.setProduct(new Product(product.name, product.description, product.price, product.id))
 }
 
 const closedCheckout = () => {
-   checkoutInstance.value.finishCheckout();
+    state.finishCheckout();
 }
 
 onMounted(() => {
@@ -65,7 +67,7 @@ onMounted(() => {
 
                     <div>
                         <h1 class="text-center">Checkout</h1>
-                        <CheckoutView @onClick="closedCheckout()" :checkout="checkoutInstance"></CheckoutView>
+                        <CheckoutView @onClick="closedCheckout()" :checkout="state"></CheckoutView>
                     </div>
                 </div>
             </div>

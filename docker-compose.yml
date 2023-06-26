@@ -48,6 +48,16 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    frontend:
+        build:
+            context: .
+            dockerfile: Dockerfile.frontend
+        ports:
+            - 3000:3000
+        volumes:
+            - .:/var/www/html
+        depends_on:
+            - laravel.test
 networks:
     sail:
         driver: bridge

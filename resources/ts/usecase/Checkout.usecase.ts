@@ -2,13 +2,11 @@ import Product from '../models/Product';
 import { useApiCheckout } from '../composables/apiCheckout';
 const { save, checkoutModel } = useApiCheckout()
 
-export default class CheckoutUsecase {
+export class CheckoutUsecase {
     private products: Product[];
 
     constructor() {
         this.products = []
-        this.verifyCheckoutDatabase();
-
     }
 
     public getProducts() { return this.products; }

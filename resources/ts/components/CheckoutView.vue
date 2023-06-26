@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { Ref, onMounted } from 'vue';
-import CheckoutUsecase from '../usecase/Checkout.usecase';
+import { onMounted  } from 'vue';
+// import { CheckoutUsecase } from '../usecase/Checkout.usecase';
 import ButtonComponent from './ButtonComponent.vue';
 import { useApiCheckout } from '../composables/apiCheckout';
 
-const { checkout } = defineProps<{ checkout: Ref<CheckoutUsecase> }>()
-
+const { checkout } = defineProps(['checkout'])
 const { getCheckout, isError, createCheckout, loading, saveMessage } = useApiCheckout();
 
 const loadCheckout = async () => {

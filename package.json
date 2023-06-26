@@ -1,9 +1,11 @@
 {
     "private": true,
+    "version": "1.0.0",
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vue-tsc && vite build --mode env",
+        "preview": "vite preview"
     },
     "devDependencies": {
         "@types/qs": "^6.9.7",

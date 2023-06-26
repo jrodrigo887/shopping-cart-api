@@ -1,29 +1,31 @@
-module.exports = {
+{
     "compilerOptions": {
-        "target": "ESNext",
+
         "useDefineForClassFields": true,
         "module": "ESNext",
-        "moduleResolution": "Node",
+        // "moduleResolution": "Node",
+        "moduleResolution": "bundler",
         "strict": true,
         "jsx": "preserve",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "allowSyntheticDefaultImports": true,
-        // "rootDir": "./",
-        // "baseUrl": "./",
-        "lib": [
-            "ESNext",
-            "DOM",
-            "dom.iterable",
-            "scripthost"
-        ],
+        "noEmit": true,
+
+        // "rootDir": "./resources",
+        // "baseUrl": "./resources",
+        "target": "ES2020",
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "allowImportingTsExtensions": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
         "paths": {
-            "@/*": "./resources/js/*",
-            "@/*": "./resources/ts/*"
+            "@/*": ["./resources/ts/*", "./resources/js/*"]
         },
         "types": [
             "vite/client"
-          ],
+        ],
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true
@@ -39,5 +41,6 @@ module.exports = {
     ],
     "exclude": [
         "node_modules"
-    ]
+    ],
+    "references": [{ "path": "./tsconfig.node.json" }]
 }
