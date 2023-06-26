@@ -30,7 +30,7 @@ class ProductController extends Controller
 
         $product = Products::create([
             'name' => $validData['name'],
-            'description' => $validData['description'],
+            'description' => $validData['description'] ?? '',
             'price' => $validData['price'],
             'checkout_id' => $validData['checkout_id'] ?? null,
         ]);
@@ -69,7 +69,7 @@ class ProductController extends Controller
 
         $product->update([
             'name' => $validData['name'],
-            'description' => $validData['description'],
+            'description' => $validData['description'] ?? '',
             'price' => $validData['price'],
             'checkout_id' => $validData['checkout_id'] ?? null,
         ]);

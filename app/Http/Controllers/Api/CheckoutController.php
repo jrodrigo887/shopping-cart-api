@@ -37,8 +37,12 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        Checkout::created($request->all());
-        return response()->json(['message'=> 'Carrrinho Criado com sucesso.'], 201);
+    //    $checkout = Checkout::create($request->all());
+       $checkout = Checkout::create([
+            'name' => $request['name'],
+            'description' => $request['description'] ?? '',
+        ]);
+        return response()->json(['message'=> 'Carrrinho Criado com sucesso.', 'checkout' => $checkout], 201);
     }
 
     /**
@@ -69,21 +73,21 @@ class CheckoutController extends Controller
         }
 
         $products = $request->input('products',[]);
+
+        if (count($products) <= 0) {
+            return response()->json(['message' => 'Nenhum produto para ser adicionado ao carrinho.'], 404);
+        }
+        // dump($products);
         foreach ($products as $prod) {
-            $product = Products::find($prod['id']);
+            $product = Products::find((int)$prod['id']);
+
             if ($product) {
                 $product->update([
                     'name' => $prod['name'],
-                    'description' => $prod['description'],
+                    'description' => $prod['description'] ?? '',
                     'price' => $prod['price'],
                     'checkout_id' => $checkoutId ?? null,
-                ]);
-             } else {
-                $checkout->products()->create([
-                    'name' => $prod['name'],
-                    'description' => $prod['description'],
-                    'price' => $prod['price'],
-                    'checkout_id' => $checkoutId ?? null,
+                    'quantity' => $prod['quantity'] ?? 1,
                 ]);
              }
         }
