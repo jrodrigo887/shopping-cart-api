@@ -12,4 +12,6 @@ export default class Product {
         public getPrice() { return this.price; }
         public getQuantity() { return this.quantity; }
         public setQuantity(qtd: number) { return this.quantity = qtd; }
+        public getDescription() { return this.quantity; }
+        public getSubtotal() { return this.quantity * this.price; }
 }
