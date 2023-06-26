@@ -7,3 +7,11 @@
     font-family: Robot,Arial, sans-serif;
   }
 }
+@layer components {
+    h1, h2, h3, h4, h5 {
+        @apply items-center text-base font-semibold text-gray-500 dark:text-gray-400;
+    },
+    p {
+        @apply items-center text-sm text-gray-600 dark:text-gray-500;
+    }
+}
