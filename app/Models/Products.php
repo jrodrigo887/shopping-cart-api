@@ -12,14 +12,24 @@ class Products extends Model
         'name',
         'decription',
         'price',
+        'quantity',
         'checkout_id'
     ];
 
-    public function getpriceAttribute() {
+    public function getPriceAttribute() {
         return $this->attributes['price'] / 100; // 2990 => 29.9
     }
-    public function setpriceAttribute($attr) {
+
+    public function setPriceAttribute($attr) {
         return $this->attributes['price'] = $attr * 100;
+    }
+
+    public function subtotal() {
+        if ($this->attributes['quantity'] > 0) {
+            return ($this->attributes['price'] * $this->attributes['quantity']) / 100;
+        } else {
+            return $this->attributes['price'] / 100;
+        }
     }
 
     public function ckeckout() {
