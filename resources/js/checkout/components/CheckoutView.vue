@@ -34,7 +34,7 @@ onMounted(() => {
                     <p>{{ product.getName() }}</p>
                 </div>
                 <button @click="checkout.removeProductPerId(product.getId())" class="p-2  transition-colors duration-150 bg-red-500 hover:bg-red-400 w-7 h-7 rounded-sm">
-                    <img src="../../assets/delete_white_24dp.svg" alt="deletar produto" />
+                    <img src="../../../assets/delete_white_24dp.svg" alt="deletar produto" />
                 </button>
             </li>
         </ul>

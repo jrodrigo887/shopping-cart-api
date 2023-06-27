@@ -31,7 +31,7 @@ onMounted(() => {
         <div>
             <button @click="openDrawer = !openDrawer"
                         class="flex py-2 px-4 text-white text-sm rounded-md space-x-1 transition-colors duration-150 bg-purple-700 hover:bg-purple-800">
-                        <img src="../assets/add_white_24dp.svg" alt="adicionar produto">
+                        <img src="../../assets/add_white_24dp.svg" alt="adicionar produto">
                         <p>Adicione um produto</p>
             </button>
         </div>
@@ -47,7 +47,7 @@ onMounted(() => {
                             <ProductView>
                                 <button @click="addProductToCheckout(product)"
                                     class="w-6 h-6 rounded-sm transition-colors duration-150 bg-purple-700 hover:bg-purple-800">
-                                    <img src="../assets/add_white_24dp.svg" alt="adicionar produto">
+                                    <img src="../../assets/add_white_24dp.svg" alt="adicionar produto">
                                 </button>
                                 <p>{{ product.name }}</p>
                             </ProductView>
